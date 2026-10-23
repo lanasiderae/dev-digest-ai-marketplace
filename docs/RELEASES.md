@@ -44,10 +44,40 @@ claude plugin tag --push        # only once dry-run looks right AND you intend
   who want to stay current without manual bumps use this channel, accepting
   that a new minor/patch can land without a separate opt-in.
 
-Until this repository has a real remote and CI, both channels are
-conceptual — `docs/RELEASES.md` documents the convention a maintainer
-should set up (e.g. two refs/branches, or two entries in a published
-marketplace index) once this repo is actually pushed somewhere.
+### Mechanism actually used (since this repo is pushed to a real remote)
+
+A dedicated **git branch named `stable`**, pushed to `origin`, currently
+pointing at the same commit as every plugin's `*--v1.0.0` tag
+(`1df9849`). `main` plays the role of `latest` — it moves forward with
+every release (it's already past `stable`, at `sdd-engineering--v1.1.0`).
+
+`claude plugin marketplace add <owner>/<repo>@<ref>` accepts a git ref
+suffix directly on the source string (confirmed: `claude plugin
+marketplace add lanasiderae/dev-digest-ai-marketplace@stable` clones at
+the `stable` ref, not the repo's default branch). So:
+
+```
+claude plugin marketplace add lanasiderae/dev-digest-ai-marketplace@stable --scope project
+claude plugin install sdd-engineering@dev-digest-ai-marketplace --scope project
+claude plugin list --json   # confirm version: "1.0.0" for all four plugins
+```
+
+versus tracking the moving release line:
+
+```
+claude plugin marketplace add lanasiderae/dev-digest-ai-marketplace --scope project
+# (no @ref ⇒ default branch ⇒ main ⇒ currently sdd-engineering 1.1.0)
+```
+
+Verified 2026-10-23 in a disposable sandbox project (not a real target
+project — see Part 5/7 of `docs/sdd/l08/marketplace-task-sequence.md` for
+that still-pending step): `@stable` resolved all four plugins to
+`1.0.0` with no dependency-unsatisfied/range-conflict/no-matching-tag
+errors.
+
+To advance `stable` to a newer known-good release later: `git push
+origin <tag-or-commit>:stable --force-with-lease` (moves the branch ref,
+does not rewrite history anyone installed from).
 
 ## Rollback procedure
 
@@ -55,11 +85,17 @@ If a release misbehaves:
 
 1. **Install from `stable`** instead of `latest` — that's the entire
    rollback mechanism. There is no `plugin rollback` command; don't invent
-   one or script around its absence.
+   one or script around its absence. Concretely:
+   `claude plugin marketplace add <owner>/<repo>@stable` (see above).
 2. If `stable` itself is the broken version, point `stable` at the last
    known-good tag (update the ref/branch it points to) rather than trying
-   to "undo" the bad release in place.
+   to "undo" the bad release in place — i.e. force-push the `stable`
+   branch ref at the right commit, don't rewrite the tag.
 3. Follow `docs/SECURITY.md`'s yank procedure instead of this one if the
    issue is a security exposure rather than an ordinary regression — that
    path also covers removing the marketplace listing, not just rolling
    back which version is recommended.
+4. Rolling back the plugin version does **not** revert files the plugin
+   already wrote in a target project (specs, plans, etc.) — that's
+   separate, ordinary version control in that project, not something
+   `claude plugin` manages.
