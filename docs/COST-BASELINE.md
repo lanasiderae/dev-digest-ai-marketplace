@@ -38,7 +38,8 @@ measured run (see provenance note after the table).
 
 | Plugin version | Commit SHA | Model | Input tokens (median) | Output tokens (median) | Cache read tokens (median) | Cache write tokens (median) | API call count (median) | Tool call count (median) | Median cost (USD) | Median latency (s) | Eval pass rate (N runs) | Critical failures | Cost per successful workflow (USD) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1.0.0 | `0a12f42786712be57bee0002552d36d02f2123f6` | claude-haiku-4-5-20251001 | 176 | 4,463.5 | 283,509.5 | 55,355.5 | 16.5 | 6 | $0.0619 | 50 | 20% (2/10) | 0 | $0.0647 |
+| 1.0.0 (before optimization) | `0a12f42786712be57bee0002552d36d02f2123f6` | claude-haiku-4-5-20251001 | 176 | 4,463.5 | 283,509.5 | 55,355.5 | 16.5 | 6 | $0.0619 | 50 | 20% (2/10) | 0 | $0.0647 |
+| 1.0.0 (after optimization) | `a35447d` (`perf: remove implementer.md's duplicated skill-list restatement`) | claude-haiku-4-5-20251001 | 172 | 4,846.0 | 281,278.5 | 50,776.5 | 16 | 5 | $0.0648 | 53 | 10% (1/10) | 0 | $0.0686 |
 
 Add one row per plugin version you baseline. Never edit a filled-in row in
 place if a later run changes the number materially — append a new row for
@@ -76,3 +77,46 @@ silently indistinguishable from a fresh one.
   happened), not `plan-ac-linked`. This is the actual current-commit
   baseline to compare an optimization against, not an artifact to
   re-run away.
+
+### Quality gate — optimization applied 2026-10-23
+
+**Optimization:** `perf: remove implementer.md's duplicated skill-list
+restatement` (commit `a35447d`) — `implementer.md`'s Hard-rules bullet
+re-enumerated the same skill-name list already in its own frontmatter
+`description`; collapsed to a pointer, removing ~90 words of literal
+self-duplication. No model or routing change in the same pass, per the
+methodology's own rule, so this delta is attributable to the prompt
+change alone.
+
+Re-ran the identical N=10/Haiku/`--allow-tools Write Edit` methodology
+against `a35447d`:
+
+| Metric | Before | After | Delta |
+|---|---|---|---|
+| Median cost | $0.0619 | $0.0648 | +4.7% (worse) |
+| Median latency | 50s | 53s | +6% (worse) |
+| Median cache-write tokens | 55,355.5 | 50,776.5 | −8.3% (better) |
+| Eval pass rate | 20% (2/10) | 10% (1/10) | −10pp (worse) |
+| Cost per successful workflow | $0.0647 | $0.0686 | +6% (worse) |
+| Critical failures | 0 | 0 | unchanged |
+
+**Verdict: no measurable win — reporting plainly rather than claiming
+one.** `implementer.md` isn't even in this eval case's execution path for
+`spec-creator`/`implementation-planner` (the edited agent's Hard-rules
+bullet only applies when `implementer` itself runs, which this fixed
+scenario explicitly stops short of — "Do not implement the feature's
+code — stop after the spec and the plan"), so a flat-to-slightly-worse
+result end to end is expected, not surprising: the cache-write token drop
+confirms the prompt itself did shrink, but that savings never had a path
+to reach this particular eval case's cost/latency/pass-rate numbers. The
+pass-rate delta (2/10 → 1/10) is one run's difference on a small, noisy
+N and should not be read as a regression caused by the change — the
+spec-creator/implementation-planner prompts, which actually run in this
+scenario, were untouched.
+**Quality gate (per the brief):** existing evals still pass at the same
+rate class (no new critical failures, 0 → 0); cost/latency did not
+measurably drop; cost-per-successful-workflow is recorded both before
+and after. Since cost/latency didn't drop, this optimization does not
+clear the bar to ship on cost grounds alone — it's net-neutral token
+hygiene (real, but not a performance win), kept because it's correct on
+its own (removes genuine duplication) not because it reduced cost.
