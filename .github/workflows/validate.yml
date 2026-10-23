@@ -70,7 +70,10 @@ jobs:
     runs-on: ubuntu-latest
     # Evals call a real model and cost real tokens — only run on PRs that
     # actually touch the plugin under eval, not on every unrelated change.
-    if: contains(github.event.pull_request.labels.*.name, 'run-evals') || github.event_name == 'push'
+    # Also requires ANTHROPIC_API_KEY to actually be configured as a repo
+    # secret (Part 3's budget decision) — skip cleanly instead of running
+    # and failing on auth when it isn't set yet.
+    if: (contains(github.event.pull_request.labels.*.name, 'run-evals') || github.event_name == 'push') && secrets.ANTHROPIC_API_KEY != ''
     steps:
       - uses: actions/checkout@v4
 
