@@ -15,6 +15,10 @@ body {
   padding: 24px 16px 64px;
 }
 
+.container:has(.home) {
+  max-width: 1100px;
+}
+
 .top-nav {
   display: flex;
   gap: 16px;
@@ -69,6 +73,213 @@ body {
   margin-bottom: 16px;
 }
 
+/* Home */
+
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+  align-items: start;
+}
+
+.home-main h1 {
+  margin-bottom: 8px;
+  font-size: 2.1rem;
+}
+
+.hero-search {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0 12px;
+}
+
+.hero-search .search-box {
+  margin-bottom: 0;
+}
+
+.hero-search button {
+  padding: 0 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background: light-dark(#111, #eee);
+  color: light-dark(#fff, #111);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.try-row,
+.keywords-row {
+  font-size: 0.85rem;
+  color: light-dark(#666, #999);
+  margin: 6px 0;
+}
+
+.chip,
+.keyword-tag {
+  display: inline-block;
+  border: 1px solid light-dark(#ddd, #333);
+  border-radius: 999px;
+  padding: 4px 10px;
+  margin: 2px 2px;
+  background: none;
+  font-size: 0.8rem;
+  color: inherit;
+  cursor: pointer;
+}
+
+.chip:hover,
+.keyword-tag:hover {
+  border-color: light-dark(#999, #666);
+}
+
+.catalog-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 32px;
+}
+
+.catalog-header .hint {
+  font-size: 0.8rem;
+  color: light-dark(#777, #aaa);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.stat-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid light-dark(#ddd, #333);
+  border-radius: 8px;
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.stat-tile:hover {
+  border-color: light-dark(#999, #666);
+}
+
+.stat-count {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: light-dark(#777, #aaa);
+}
+
+.home-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-card {
+  border: 1px solid light-dark(#ddd, #333);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.sidebar-card p {
+  margin-top: 0;
+  font-size: 0.9rem;
+}
+
+.sidebar-card .install-command {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar-card .install-command code {
+  overflow-x: auto;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+.sidebar-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.sidebar-card-header h3 {
+  margin: 0;
+}
+
+.sidebar-card-header a {
+  font-size: 0.8rem;
+}
+
+.whats-new-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.whats-new-list li {
+  padding: 8px 0;
+  border-top: 1px solid light-dark(#eee, #222);
+}
+
+.whats-new-list li:first-child {
+  border-top: none;
+}
+
+.whats-new-row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.version-tag {
+  font-size: 0.75rem;
+  color: light-dark(#777, #aaa);
+}
+
+.whats-new-snippet {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: light-dark(#666, #999);
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid light-dark(#eee, #222);
+  font-size: 0.8rem;
+  color: light-dark(#777, #aaa);
+}
+
+@media (max-width: 760px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .result-list {
   list-style: none;
   padding: 0;
@@ -83,6 +294,39 @@ body {
 .kind-tag {
   font-size: 0.8rem;
   color: light-dark(#777, #aaa);
+  text-transform: lowercase;
+}
+
+.kind-tag {
+  display: inline-block;
+  width: fit-content;
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: light-dark(#eee, #2a2a2a);
+}
+
+.kind-plugin {
+  color: light-dark(#5b4fc4, #b4a9ff);
+}
+
+.kind-skill {
+  color: light-dark(#1a7f4b, #7fe3ab);
+}
+
+.kind-agent {
+  color: light-dark(#8a3fae, #d9a3f0);
+}
+
+.kind-command {
+  color: light-dark(#a3621a, #f0c27f);
+}
+
+.kind-hook {
+  color: light-dark(#1a7f8a, #7fdbe3);
+}
+
+.kind-mcp {
+  color: light-dark(#a3271a, #f09a7f);
 }
 
 .install-command {

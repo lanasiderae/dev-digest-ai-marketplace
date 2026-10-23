@@ -36,14 +36,38 @@ function buildSearch(index: Index) {
   return ms;
 }
 
-export function Search({ index }: { index: Index }) {
+export function Search({
+  index,
+  initialQuery = '',
+  initialKind = null,
+}: {
+  index: Index;
+  initialQuery?: string;
+  initialKind?: 'plugin' | 'skill' | 'agent' | null;
+}) {
   const ms = useMemo(() => buildSearch(index), [index]);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(initialQuery);
 
   const results = useMemo(() => {
-    if (!query.trim()) return [];
+    if (!query.trim()) {
+      // No query text: browsing a kind (from Home's stat tiles) shows
+      // every entry of it rather than requiring search text.
+      if (!initialKind) return [];
+      return index.entries
+        .filter((e) => e.kind === initialKind)
+        .map((e) => ({
+          id: e.id,
+          kind: e.kind,
+          plugin: e.plugin,
+          name: e.name,
+          description: e.description,
+          keywords: e.keywords.join(' '),
+          searchText: e.searchText,
+          score: 1,
+        }));
+    }
     return ms.search(query) as unknown as Array<SearchDoc & { score: number }>;
-  }, [ms, query]);
+  }, [ms, query, index, initialKind]);
 
   const grouped = {
     plugin: results.filter((r) => r.kind === 'plugin'),
@@ -66,7 +90,11 @@ export function Search({ index }: { index: Index }) {
         className="search-box"
       />
 
+      {!query.trim() && !initialKind && <p>Describe what you need, or pick a kind from Home.</p>}
       {query.trim() && results.length === 0 && <p>No results for "{query}".</p>}
+      {!query.trim() && initialKind && results.length === 0 && (
+        <p>No {initialKind} entries in the catalog yet.</p>
+      )}
 
       {(['plugin', 'skill', 'agent'] as const).map((kind) =>
         grouped[kind].length > 0 ? (

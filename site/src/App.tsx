@@ -39,26 +39,34 @@ export function App() {
     );
   }
 
-  const pluginMatch = hash.match(/^\/plugin\/(.+)$/);
-  const artifactMatch = hash.match(/^\/artifact\/(.+)$/);
+  const [routePath, queryString] = hash.split('?');
+  const params = new URLSearchParams(queryString || '');
+  const pluginMatch = routePath.match(/^\/plugin\/(.+)$/);
+  const artifactMatch = routePath.match(/^\/artifact\/(.+)$/);
 
   let page: React.ReactNode;
-  if (hash === '/' || hash === '') {
-    page = <Home index={index} stats={stats} />;
-  } else if (hash === '/search') {
-    page = <Search index={index} />;
+  if (routePath === '/' || routePath === '') {
+    page = <Home index={index} stats={stats} releases={releases} />;
+  } else if (routePath === '/search') {
+    page = (
+      <Search
+        index={index}
+        initialQuery={params.get('q') || ''}
+        initialKind={(params.get('kind') as 'plugin' | 'skill' | 'agent' | null) || null}
+      />
+    );
   } else if (pluginMatch) {
     page = <PluginDetail index={index} releases={releases} name={decodeURIComponent(pluginMatch[1])} />;
   } else if (artifactMatch) {
     page = <ArtifactDetail index={index} id={decodeURIComponent(artifactMatch[1])} />;
-  } else if (hash === '/whats-new') {
+  } else if (routePath === '/whats-new') {
     page = <WhatsNew releases={releases} />;
-  } else if (hash === '/getting-started') {
+  } else if (routePath === '/getting-started') {
     page = <GettingStarted />;
   } else {
     page = (
       <div>
-        <p>Not found: {hash}</p>
+        <p>Not found: {routePath}</p>
         <a href="#/">Back to home</a>
       </div>
     );

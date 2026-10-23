@@ -1,7 +1,10 @@
 {
-  "generatedAt": "2026-10-23T15:19:16.182Z",
+  "generatedAt": "2026-10-23T15:27:15.718Z",
   "totalPlugins": 4,
   "totalSkills": 15,
   "totalAgents": 6,
-  "totalEvalCases": 2
+  "totalEvalCases": 2,
+  "totalCommands": 0,
+  "totalHooks": 0,
+  "totalMcpServers": 0
 }

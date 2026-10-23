@@ -1,7 +1,13 @@
 import { useState } from 'react';
 
-export function InstallCommand({ pluginName }: { pluginName: string }) {
-  const cmd = `/plugin install ${pluginName}@dev-digest-ai-marketplace`;
+export function InstallCommand({
+  pluginName,
+  command,
+}: {
+  pluginName?: string;
+  command?: string;
+}) {
+  const cmd = command ?? `/plugin install ${pluginName}@dev-digest-ai-marketplace`;
   const [copied, setCopied] = useState(false);
 
   const onCopy = async () => {
