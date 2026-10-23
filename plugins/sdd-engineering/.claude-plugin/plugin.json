@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "sdd-engineering",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Spec-driven development pipeline: spec-creator, implementation-planner, implementer and plan-verifier agents, plus run-plan, workflow-retro and engineering-insights skills, for taking a requirement from an evidence-based specification through an AC-linked plan, implementation, architecture/research review, and closed-list verification. Depends on engineering-paved-path for domain skills, research-tools for the researcher subagent, and architecture-review for the architecture-reviewer subagent.",
   "author": {
     "name": "dev-digest-ai-marketplace"

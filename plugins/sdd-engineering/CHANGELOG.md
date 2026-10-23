@@ -4,6 +4,19 @@ All notable changes to the `sdd-engineering` plugin are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/),
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] — 2026-10-23
+
+- `spec-creator` now treats a mandatory requirement with no corresponding
+  Acceptance Criteria row as a blocking gap, exactly as blocking as an
+  unresolved `[NEEDS CLARIFICATION: ...]` marker — a specification cannot
+  be finalized/approved while any mandatory requirement lacks an AC-ID.
+  A requirement that's genuinely optional must be stated as a non-goal
+  instead of left silently uncovered.
+- Added `evals/spec-missing-ac-blocked/`: a draft spec with a latency
+  requirement that has no AC-ID, and a request to finalize it anyway —
+  the grader fails if the agent approves/finalizes instead of blocking on
+  the gap.
+
 ## [1.0.0] — 2026-10-23
 
 Initial extraction and release.

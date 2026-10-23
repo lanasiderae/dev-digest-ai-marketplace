@@ -1,11 +1,17 @@
 {
-  "generatedAt": "2026-10-23T14:51:50.639Z",
+  "generatedAt": "2026-10-23T15:09:05.723Z",
   "releases": [
     {
       "plugin": "sdd-engineering",
       "version": "1.0.0",
       "date": "2026-10-23",
       "body": "Initial extraction and release.\n\n- Added `spec-creator`, `implementation-planner`, `implementer`, and\n  `plan-verifier` agents, generalized from a product-specific course\n  codebase to work against any target repository's own discovered package\n  layout and test commands rather than a fixed set of package names.\n- Added `run-plan`, `engineering-insights`, and `workflow-retro` skills.\n  `engineering-insights` now documents the per-package `INSIGHTS.md`\n  convention explicitly instead of hardcoding package names;\n  `workflow-retro`'s bundled `usage-report.py` script is invoked via\n  `${CLAUDE_SKILL_DIR}` rather than a hardcoded path.\n- Added a minimal eval suite (`evals/small-feature-spec-and-plan/`) covering\n  the fixed scenario: a user requests a specification and implementation\n  plan for a small feature.\n- Declared dependencies on `engineering-paved-path@^1.0.0`,\n  `research-tools@^1.0.0`, and `architecture-review@^1.0.0`."
+    },
+    {
+      "plugin": "sdd-engineering",
+      "version": "1.1.0",
+      "date": "2026-10-23",
+      "body": "- `spec-creator` now treats a mandatory requirement with no corresponding\n  Acceptance Criteria row as a blocking gap, exactly as blocking as an\n  unresolved `[NEEDS CLARIFICATION: ...]` marker — a specification cannot\n  be finalized/approved while any mandatory requirement lacks an AC-ID.\n  A requirement that's genuinely optional must be stated as a non-goal\n  instead of left silently uncovered.\n- Added `evals/spec-missing-ac-blocked/`: a draft spec with a latency\n  requirement that has no AC-ID, and a request to finalize it anyway —\n  the grader fails if the agent approves/finalizes instead of blocking on\n  the gap."
     },
     {
       "plugin": "architecture-review",
