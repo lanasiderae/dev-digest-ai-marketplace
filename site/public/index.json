@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T15:09:05.723Z",
+  "generatedAt": "2026-10-23T15:19:16.182Z",
   "marketplace": {
     "name": "dev-digest-ai-marketplace",
     "description": "Four standalone Claude Code plugins extracted and generalized from DevDigest's course agent/skill set: shared engineering-practice skills, a read-only research subagent, an architecture reviewer that reads a repo's own layering docs, and a full spec-driven-development pipeline.",

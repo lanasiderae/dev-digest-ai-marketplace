@@ -8,19 +8,23 @@
   "plugins": [
     {
       "name": "engineering-paved-path",
-      "source": "./plugins/engineering-paved-path"
+      "source": "./plugins/engineering-paved-path",
+      "description": "Shared, framework-level engineering practice skills (React, Next.js, Fastify, Drizzle ORM, PostgreSQL, Zod, TypeScript, security, layered backend architecture, frontend UI architecture, Mermaid diagrams, React Testing Library) for any TypeScript web app repository — the 'paved path' every other plugin in this marketplace builds on."
     },
     {
       "name": "research-tools",
-      "source": "./plugins/research-tools"
+      "source": "./plugins/research-tools",
+      "description": "A read-only research subagent for investigating a specific question, either in the current repository (code, docs, config, git history) or externally (web pages, docs, APIs), and returning a structured, evidence-cited findings report."
     },
     {
       "name": "architecture-review",
-      "source": "./plugins/architecture-review"
+      "source": "./plugins/architecture-review",
+      "description": "A read-only architecture reviewer that checks a diff or path set against a repository's own documented layering rules (its onion/hexagonal/clean-architecture conventions, framework edge conventions, and frontend placement/import-direction rules), instead of assuming any one repo's specific module names. Returns evidence-backed findings, never a pass/fail verdict."
     },
     {
       "name": "sdd-engineering",
-      "source": "./plugins/sdd-engineering"
+      "source": "./plugins/sdd-engineering",
+      "description": "Spec-driven development pipeline: spec-creator, implementation-planner, implementer and plan-verifier agents, plus run-plan, workflow-retro and engineering-insights skills, for taking a requirement from an evidence-based specification through an AC-linked plan, implementation, architecture/research review, and closed-list verification. Depends on engineering-paved-path for domain skills, research-tools for the researcher subagent, and architecture-review for the architecture-reviewer subagent."
     }
   ]
 }

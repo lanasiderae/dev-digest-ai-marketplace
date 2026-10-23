@@ -70,10 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     # Evals call a real model and cost real tokens — only run on PRs that
     # actually touch the plugin under eval, not on every unrelated change.
-    # Also requires ANTHROPIC_API_KEY to actually be configured as a repo
-    # secret (Part 3's budget decision) — skip cleanly instead of running
-    # and failing on auth when it isn't set yet.
-    if: (contains(github.event.pull_request.labels.*.name, 'run-evals') || github.event_name == 'push') && secrets.ANTHROPIC_API_KEY != ''
+    if: contains(github.event.pull_request.labels.*.name, 'run-evals') || github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
 
@@ -81,6 +78,15 @@ jobs:
         run: npm install -g @anthropic-ai/claude-code
 
       - name: Run sdd-engineering eval cases
-        run: claude plugin eval ./plugins/sdd-engineering --trust-plugin --allow-tools Write Edit
+        # secrets can't be referenced in a job-level `if:`, so check at
+        # runtime instead: skip cleanly (exit 0) rather than run and fail
+        # on auth when ANTHROPIC_API_KEY isn't configured yet (Part 3's
+        # budget decision for CI itself).
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY not configured — skipping eval run (no spend)."
+            exit 0
+          fi
+          claude plugin eval ./plugins/sdd-engineering --trust-plugin --allow-tools Write Edit
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
