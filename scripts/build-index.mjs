@@ -18,6 +18,7 @@ import { readFile, writeFile, mkdir, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -235,6 +236,63 @@ async function countEvalCases(pluginDir) {
   return count || (md.length > 0 ? 1 : 0);
 }
 
+/** Commands are `commands/*.md` slash-command definitions. */
+async function countCommands(pluginDir) {
+  const commandsDir = path.join(pluginDir, 'commands');
+  if (!existsSync(commandsDir)) return 0;
+  const entries = await readdir(commandsDir, { withFileTypes: true });
+  return entries.filter((e) => e.isFile() && e.name.endsWith('.md')).length;
+}
+
+/** Hooks can be declared as `hooks/hooks.json` (array/object of hook defs)
+ * or inline in plugin.json's own `hooks` field — either shape, count how
+ * many distinct hook entries are declared. */
+async function countHooks(pluginDir, pluginJson) {
+  let count = 0;
+  const hooksJsonPath = path.join(pluginDir, 'hooks', 'hooks.json');
+  const hooksJson = await readJsonIfExists(hooksJsonPath);
+  if (hooksJson) {
+    count += Array.isArray(hooksJson) ? hooksJson.length : Object.keys(hooksJson).length;
+  }
+  if (pluginJson && pluginJson.hooks) {
+    count += Array.isArray(pluginJson.hooks)
+      ? pluginJson.hooks.length
+      : Object.keys(pluginJson.hooks).length;
+  }
+  return count;
+}
+
+/** MCP servers can be declared as `.mcp.json`/`mcp.json` (an
+ * `mcpServers` map) or inline in plugin.json's own `mcpServers` field. */
+async function countMcpServers(pluginDir, pluginJson) {
+  let count = 0;
+  for (const name of ['.mcp.json', 'mcp.json']) {
+    const mcpJson = await readJsonIfExists(path.join(pluginDir, name));
+    if (mcpJson && mcpJson.mcpServers) {
+      count += Object.keys(mcpJson.mcpServers).length;
+    }
+  }
+  if (pluginJson && pluginJson.mcpServers) {
+    count += Object.keys(pluginJson.mcpServers).length;
+  }
+  return count;
+}
+
+/** "<owner>/<repo>" parsed from `git remote get-url origin`, or null if
+ * no remote is configured (e.g. a not-yet-pushed local scaffold). */
+function gitRepoSlug() {
+  try {
+    const url = execFileSync('git', ['remote', 'get-url', 'origin'], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    }).trim();
+    const m = url.match(/github\.com[:/]([^/]+)\/([^/.]+?)(?:\.git)?$/);
+    return m ? `${m[1]}/${m[2]}` : null;
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
   await mkdir(SITE_PUBLIC_DIR, { recursive: true });
   await mkdir(BODIES_DIR, { recursive: true });
@@ -251,6 +309,9 @@ async function main() {
   let totalSkills = 0;
   let totalAgents = 0;
   let totalEvalCases = 0;
+  let totalCommands = 0;
+  let totalHooks = 0;
+  let totalMcpServers = 0;
 
   for (const pluginRef of marketplace.plugins) {
     const pluginDir = path.resolve(ROOT, pluginRef.source);
@@ -273,6 +334,9 @@ async function main() {
     totalSkills += skillEntries.length;
     totalAgents += agentEntries.length;
     totalEvalCases += await countEvalCases(pluginDir);
+    totalCommands += await countCommands(pluginDir);
+    totalHooks += await countHooks(pluginDir, pluginJson);
+    totalMcpServers += await countMcpServers(pluginDir, pluginJson);
 
     indexEntries.push({
       kind: 'plugin',
@@ -307,6 +371,7 @@ async function main() {
       name: marketplace.name,
       description: marketplace.description || '',
       owner: marketplace.owner || null,
+      repoSlug: gitRepoSlug(),
     },
     entries: indexEntries,
   };
@@ -319,6 +384,9 @@ async function main() {
     totalSkills,
     totalAgents,
     totalEvalCases,
+    totalCommands,
+    totalHooks,
+    totalMcpServers,
   };
 
   await writeFile(path.join(SITE_PUBLIC_DIR, 'index.json'), JSON.stringify(index, null, 2));

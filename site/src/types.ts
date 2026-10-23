@@ -28,6 +28,7 @@ export interface Index {
     name: string;
     description: string;
     owner: { name: string } | null;
+    repoSlug: string | null;
   };
   entries: IndexEntry[];
 }
@@ -50,4 +51,7 @@ export interface Stats {
   totalSkills: number;
   totalAgents: number;
   totalEvalCases: number;
+  totalCommands: number;
+  totalHooks: number;
+  totalMcpServers: number;
 }
