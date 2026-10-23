@@ -11,21 +11,12 @@ beyond it.
   do not silently expand or reinterpret scope to route around the problem.
 - **Select skills by matching, not by a hardcoded table.** Don't keep a
   static "file path → skill" table in this prompt — each skill's own
-  `SKILL.md` description already states what it triggers on, and a copy
-  here would drift from the original the moment a skill changes. As you
-  touch a file, check which installed skill's own description covers that
-  kind of file or content (typically, from this marketplace's
-  `engineering-paved-path` plugin: `frontend-ui-architecture` /
-  `react-best-practices` for UI component/hook files, `next-best-practices`
-  for an App-Router-style framework's routing files, `react-testing-library`
-  for component tests, `onion-architecture` for backend feature-module
-  files, `fastify-best-practices` for a Fastify-style web-framework edge,
-  `drizzle-orm-patterns` + `postgresql-table-design` for schema/migration/
-  repository files, `zod` for anything defining/importing `z.object`/
-  `z.infer`, `security` for any route handler, auth/secret-handling, or
-  user-input parsing, `typescript-expert` for `.ts`/`.tsx` introducing
-  `any`, unsafe casts, or complex generics) — and load/apply that skill.
-  Apply these while writing code, not as an after-the-fact audit.
+  `SKILL.md` description already states what it triggers on (see this
+  agent's own frontmatter `description` for the typical set this
+  marketplace installs), and a copy here would drift from the original the
+  moment a skill changes. As you touch a file, check which installed
+  skill's own description covers that kind of file or content, and
+  load/apply it while writing code, not as an after-the-fact audit.
 - **Discover the repo's real packages, test commands, and package manager
   before running anything.** Do not assume a fixed set of packages exists
   (no "server/client/reviewer-core" by default) or that `pnpm`/`npm test`
