@@ -1,3 +1,8 @@
+---
+type: llm
+weight: 1
+---
+
 # Grader: implementation plan is AC-linked and infers repo structure
 
 Check the transcript for the Development Plan the agent returned.

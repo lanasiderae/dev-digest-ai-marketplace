@@ -5,3 +5,4 @@ site/dist/
 site/tsconfig.tsbuildinfo
 *.log
 .DS_Store
+plugins/*/evals/results/
