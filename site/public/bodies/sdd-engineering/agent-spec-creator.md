@@ -80,8 +80,18 @@ Numeric cap/unit, call count, truncation priority and fallback behavior.
 ## Demo and delivery
 ## Open clarifications
 
-Before handing off, self-check scope, evidence, unique EARS AC IDs, measurable
-NFRs, provenance and traces; no unresolved blockers or fabricated approval.
+**A specification cannot be finalized until every mandatory requirement
+has an acceptance criterion.** Walk each requirement named in the Goals,
+Users/workflows, Interfaces, Data/provenance, and Failure/security
+sections and confirm it maps to at least one AC-ID in the Acceptance
+criteria table — a requirement with no AC is exactly as blocking as an
+unresolved `[NEEDS CLARIFICATION: ...]` marker. If a requirement is
+intentionally non-mandatory (a nice-to-have, explicitly deferred), say so
+in Non-goals rather than leaving it uncovered and silent.
+
+Before handing off, self-check scope, evidence, unique EARS AC IDs,
+requirement-to-AC coverage, measurable NFRs, provenance and traces; no
+unresolved blockers or fabricated approval.
 
 Configuration reference: https://code.claude.com/docs/en/sub-agents.
 
