@@ -9,14 +9,33 @@ const TRY_QUERIES = [
   'retro after release',
 ];
 
-const STAT_TILES = [
+type StatKind = 'plugin' | 'skill' | 'agent' | 'command' | 'hook' | 'mcp';
+
+const STAT_TILES: Array<{ kind: StatKind; label: string }> = [
   { kind: 'plugin', label: 'plugins' },
   { kind: 'skill', label: 'skills' },
   { kind: 'agent', label: 'agents' },
   { kind: 'command', label: 'commands' },
   { kind: 'hook', label: 'hooks' },
   { kind: 'mcp', label: 'MCP servers' },
-] as const;
+];
+
+function Icon({ d, ...rest }: { d: string } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...rest}>
+      <path d={d} />
+    </svg>
+  );
+}
+
+const ICON_PATHS: Record<StatKind, string> = {
+  plugin: 'M7 3v2.5a1.5 1.5 0 0 0 3 0V3h4v4h-2.5a1.5 1.5 0 0 0 0 3H14v4h-4v-2.5a1.5 1.5 0 0 0-3 0V14H3v-4h2.5a1.5 1.5 0 0 0 0-3H3V3z',
+  skill: 'M3 4.5A1.5 1.5 0 0 1 4.5 3H10v12.5H4.5A1.5 1.5 0 0 0 3 17zM17 4.5A1.5 1.5 0 0 0 15.5 3H10v12.5h5.5a1.5 1.5 0 0 1 1.5 1.5z',
+  agent: 'M10 2v2.5M5 8h10a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1zM7.5 12v-.5M12.5 12v-.5M3 11h2M15 11h2',
+  command: 'M3 4h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zM5 8l3 2.5L5 13M11 13h4',
+  hook: 'M7 3h3a2 2 0 0 1 2 2v6a3 3 0 1 1-6 0V6M12 11l2 2-2 2',
+  mcp: 'M4 7h12M4 13h12M6.5 4.5v2M13.5 4.5v2M6.5 13.5v2M13.5 13.5v2',
+};
 
 function statCount(stats: Stats | null, kind: (typeof STAT_TILES)[number]['kind']): number {
   if (!stats) return 0;
@@ -114,7 +133,10 @@ export function Home({ index, stats, releases }: { index: Index; stats: Stats | 
 
           <div className="stat-grid">
             {STAT_TILES.map((t) => (
-              <a key={t.kind} className="stat-tile" href={`#/search?kind=${t.kind}`}>
+              <a key={t.kind} className="stat-tile" data-kind={t.kind} href={`#/search?kind=${t.kind}`}>
+                <span className="stat-icon">
+                  <Icon d={ICON_PATHS[t.kind]} />
+                </span>
                 <span className="stat-count">{statCount(stats, t.kind)}</span>
                 <span className={`kind-tag kind-${t.kind}`}>{t.kind}</span>
                 <span className="stat-label">{t.label}</span>
