@@ -1,0 +1,14 @@
+# CODEOWNERS
+#
+# Placeholder team handles below (@dev-digest-ai-marketplace/*) are NOT real
+# GitHub teams — this repository has never been pushed to GitHub. Before
+# this repo is pushed anywhere and these rules are expected to actually
+# route review requests, replace every handle below with a real GitHub
+# team (or individual) handle that exists in the destination org/repo.
+
+plugins/engineering-paved-path/**  @dev-digest-ai-marketplace/engineering-paved-path-owners
+plugins/research-tools/**          @dev-digest-ai-marketplace/research-tools-owners
+plugins/architecture-review/**     @dev-digest-ai-marketplace/architecture-review-owners
+plugins/sdd-engineering/**         @dev-digest-ai-marketplace/sdd-engineering-owners
+site/**                            @dev-digest-ai-marketplace/site-owners
+docs/**                            @dev-digest-ai-marketplace/docs-owners

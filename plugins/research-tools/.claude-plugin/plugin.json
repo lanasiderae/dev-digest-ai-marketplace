@@ -1,0 +1,15 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "research-tools",
+  "version": "1.0.0",
+  "description": "A read-only research subagent for investigating a specific question, either in the current repository (code, docs, config, git history) or externally (web pages, docs, APIs), and returning a structured, evidence-cited findings report.",
+  "author": {
+    "name": "dev-digest-ai-marketplace"
+  },
+  "keywords": [
+    "research",
+    "investigation",
+    "read-only",
+    "web-search"
+  ]
+}

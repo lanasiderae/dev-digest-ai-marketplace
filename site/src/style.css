@@ -1,0 +1,118 @@
+:root {
+  color-scheme: light dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: light-dark(#ffffff, #121212);
+  color: light-dark(#111111, #eeeeee);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.top-nav {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+}
+
+.subtitle {
+  color: light-dark(#555, #aaa);
+}
+
+.stats-line {
+  font-size: 0.85rem;
+  color: light-dark(#666, #999);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.card {
+  display: block;
+  border: 1px solid light-dark(#ddd, #333);
+  border-radius: 8px;
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  border-color: light-dark(#999, #666);
+}
+
+.version {
+  font-size: 0.8rem;
+  color: light-dark(#666, #999);
+}
+
+.deps {
+  font-size: 0.8rem;
+  color: light-dark(#777, #aaa);
+}
+
+.search-box {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+.result-list {
+  list-style: none;
+  padding: 0;
+}
+
+.result-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid light-dark(#eee, #222);
+}
+
+.plugin-tag,
+.kind-tag {
+  font-size: 0.8rem;
+  color: light-dark(#777, #aaa);
+}
+
+.install-command {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: light-dark(#f5f5f5, #1e1e1e);
+  padding: 8px 12px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.install-command code {
+  font-family: monospace;
+}
+
+.markdown-body {
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.markdown-body pre {
+  background: light-dark(#f5f5f5, #1e1e1e);
+  padding: 12px;
+  overflow-x: auto;
+  border-radius: 6px;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px 16px 48px;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "architecture-review",
+  "version": "1.0.0",
+  "description": "A read-only architecture reviewer that checks a diff or path set against a repository's own documented layering rules (its onion/hexagonal/clean-architecture conventions, framework edge conventions, and frontend placement/import-direction rules), instead of assuming any one repo's specific module names. Returns evidence-backed findings, never a pass/fail verdict.",
+  "author": {
+    "name": "dev-digest-ai-marketplace"
+  },
+  "keywords": [
+    "architecture",
+    "code-review",
+    "read-only"
+  ],
+  "dependencies": [
+    "engineering-paved-path@^1.0.0"
+  ]
+}

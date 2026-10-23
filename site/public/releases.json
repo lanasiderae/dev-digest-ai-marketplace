@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-10-23T08:29:25.869Z",
+  "releases": [
+    {
+      "plugin": "sdd-engineering",
+      "version": "1.0.0",
+      "date": "2026-10-23",
+      "body": "Initial extraction and release.\n\n- Added `spec-creator`, `implementation-planner`, `implementer`, and\n  `plan-verifier` agents, generalized from a product-specific course\n  codebase to work against any target repository's own discovered package\n  layout and test commands rather than a fixed set of package names.\n- Added `run-plan`, `engineering-insights`, and `workflow-retro` skills.\n  `engineering-insights` now documents the per-package `INSIGHTS.md`\n  convention explicitly instead of hardcoding package names;\n  `workflow-retro`'s bundled `usage-report.py` script is invoked via\n  `${CLAUDE_SKILL_DIR}` rather than a hardcoded path.\n- Added a minimal eval suite (`evals/small-feature-spec-and-plan/`) covering\n  the fixed scenario: a user requests a specification and implementation\n  plan for a small feature.\n- Declared dependencies on `engineering-paved-path@^1.0.0`,\n  `research-tools@^1.0.0`, and `architecture-review@^1.0.0`."
+    },
+    {
+      "plugin": "architecture-review",
+      "version": "1.0.0",
+      "date": "2026-10-23",
+      "body": "Initial extraction and release. `architecture-reviewer` agent rewritten\nfrom a course project's `.claude/agents/architecture-reviewer.md`, which\nassumed that specific repo's own onion layering, a pure-core-library\npurity rule, and literal module paths (`reviewer-core`, `@devdigest`,\n`server/src/modules`). Added a \"Step zero\" procedure that reads the\n*target* repository's own architecture documentation before reviewing\nanything, and verified zero remaining references to the source product's\nmodule names."
+    },
+    {
+      "plugin": "research-tools",
+      "version": "1.0.0",
+      "date": "2026-10-23",
+      "body": "Initial extraction and release. `researcher` agent extracted from a course\nproject's `.claude/agents/researcher.md`; the source prompt was already\ngeneric and read-only. Removed one reference to invoking a specific\nexternal deep-research skill by name, generalized to \"if the invoking\nsession provides one.\""
+    },
+    {
+      "plugin": "engineering-paved-path",
+      "version": "1.0.0",
+      "date": "2026-10-23",
+      "body": "Initial extraction and release. Twelve skills extracted from a course\nproject's `.claude/skills/`, copied faithfully for the already-generic\nskills, and generalized for `onion-architecture` (module names, adapter\nnames, and project-specific grounding references rewritten to be\ndiscovered from the target repo rather than assumed) and\n`frontend-ui-architecture` (a handful of \"this repo's `client/...`\"\nreferences rewritten to check the target repo's own docs instead of\nasserting the source repo's files exist)."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "dev-digest-ai-marketplace",
+  "description": "Four standalone Claude Code plugins extracted and generalized from DevDigest's course agent/skill set: shared engineering-practice skills, a read-only research subagent, an architecture reviewer that reads a repo's own layering docs, and a full spec-driven-development pipeline.",
+  "owner": {
+    "name": "dev-digest-ai-marketplace"
+  },
+  "plugins": [
+    {
+      "name": "engineering-paved-path",
+      "source": "./plugins/engineering-paved-path"
+    },
+    {
+      "name": "research-tools",
+      "source": "./plugins/research-tools"
+    },
+    {
+      "name": "architecture-review",
+      "source": "./plugins/architecture-review"
+    },
+    {
+      "name": "sdd-engineering",
+      "source": "./plugins/sdd-engineering"
+    }
+  ]
+}

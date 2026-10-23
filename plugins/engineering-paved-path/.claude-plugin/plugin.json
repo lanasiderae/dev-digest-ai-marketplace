@@ -1,0 +1,21 @@
+{
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
+  "name": "engineering-paved-path",
+  "version": "1.0.0",
+  "description": "Shared, framework-level engineering practice skills (React, Next.js, Fastify, Drizzle ORM, PostgreSQL, Zod, TypeScript, security, layered backend architecture, frontend UI architecture, Mermaid diagrams, React Testing Library) for any TypeScript web app repository — the 'paved path' every other plugin in this marketplace builds on.",
+  "author": {
+    "name": "dev-digest-ai-marketplace"
+  },
+  "keywords": [
+    "react",
+    "nextjs",
+    "fastify",
+    "drizzle",
+    "postgresql",
+    "zod",
+    "typescript",
+    "security",
+    "architecture",
+    "testing"
+  ]
+}
