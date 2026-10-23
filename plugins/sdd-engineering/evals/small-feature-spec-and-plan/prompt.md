@@ -1,3 +1,8 @@
+---
+max_turns: 20
+allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+---
+
 You are working in a small existing TypeScript web app repository (a single
 package at the repo root, with a `package.json`, a handful of Express/Fastify
 routes under `src/routes/`, and no pre-existing `specs/` or `docs/sdd/`

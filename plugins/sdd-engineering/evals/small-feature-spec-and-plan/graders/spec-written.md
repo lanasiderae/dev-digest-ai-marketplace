@@ -1,3 +1,8 @@
+---
+type: llm
+weight: 1
+---
+
 # Grader: specification was written to the right place, in the right shape
 
 Check the transcript and any files the agent wrote.
