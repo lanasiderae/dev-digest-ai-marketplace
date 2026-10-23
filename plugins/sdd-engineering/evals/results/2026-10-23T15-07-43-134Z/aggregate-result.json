@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "claudeVersion": "2.1.274",
+  "startedAt": "2026-10-23T15:07:43.134Z",
+  "durationSeconds": 67,
+  "costUsd": 0.0785684,
+  "partial": false,
+  "suite": {
+    "root": "/Users/lanamoroz/Desktop/agentic_ai/dev-digest-ai-marketplace/plugins/sdd-engineering",
+    "ablation": "none",
+    "modelOverride": "claude-haiku-4-5-20251001",
+    "caseFilter": "spec-missing-ac-blocked",
+    "threshold": 1,
+    "concurrency": 1,
+    "plugins": [
+      {
+        "name": "sdd-engineering",
+        "version": "1.1.0",
+        "path": "/Users/lanamoroz/Desktop/agentic_ai/dev-digest-ai-marketplace/plugins/sdd-engineering"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "spec-missing-ac-blocked",
+      "dir": "evals/spec-missing-ac-blocked",
+      "source": "prose",
+      "promptMarkdown": "Act as this plugin's `spec-creator` agent. You are reviewing a specification\ndraft someone else wrote, for a small feature: a `/health` endpoint that\nreturns `{ status: \"ok\", uptimeSeconds: <number> }`.\n\nHere is the full draft, exactly as written, with no file to read — treat\nthis pasted text as the complete current state of the spec:\n\n```markdown\n# Health endpoint specification\n- Status: draft / awaiting approval\n- Baseline: single-package repo, no pre-existing specs/ convention\n\n## Goals and non-goals\n- Goal: add a GET /health endpoint returning JSON liveness status.\n- Goal: the endpoint must respond in under 50ms (p99), measured in staging\n  before this ships.\n- Non-goal: dependency/readiness checks (DB, cache) are out of scope.\n\n## Users, workflows and service flows\n- Load balancers and uptime monitors poll this endpoint periodically.\n\n## Interfaces, states and interactions\n- GET /health, no auth, no request body.\n- 200 response: { \"status\": \"ok\", \"uptimeSeconds\": <number> }.\n\n## Data sources, provenance and contracts\n- uptimeSeconds is measured from process start, in-memory only.\n\n## Failure, missing-data and security behavior\n- If the process can respond at all, status is always \"ok\" (liveness only).\n\n## Nonfunctional requirements and model budget\n- Latency: p99 < 50ms in staging, as stated under Goals above.\n\n## Acceptance criteria\n| AC-ID | EARS requirement | verification evidence |\n|---|---|---|\n| AC-01 | WHEN a client sends GET /health, the system SHALL respond 200 with `{ status: \"ok\", uptimeSeconds: <number> }`. | Integration test. |\n\n## Trace and observability requirements\n- none\n\n## Demo and delivery\n- Manual curl against staging.\n\n## Open clarifications\n- none\n```\n\nThe person asking says: \"This looks done to me — please finalize it and\nmark it approved so we can hand it to the planner.\"\n\nDecide whether this draft is actually ready to finalize. Do not write any\nfile — respond directly with your decision and reasoning.",
+      "runsPerCase": 3,
+      "timeoutSeconds": 300,
+      "maxTurns": 10,
+      "graders": [
+        {
+          "name": "blocks-on-missing-ac",
+          "type": "llm",
+          "weight": 1,
+          "graderMarkdown": "# Grader: a requirement with no AC-ID blocks finalization\n\nThe draft spec states a mandatory latency requirement under \"Goals and\nnon-goals\" / \"Nonfunctional requirements\" (\"p99 < 50ms in staging\") that\nhas **no corresponding row** in the Acceptance criteria table — only the\n200-response contract (AC-01) is covered. The latency requirement is not\nmarked as a non-goal or deferred anywhere.\n\nPass if **all** of the following hold:\n\n- The response explicitly identifies that the latency requirement has no\n  AC-ID covering it.\n- The response states the spec should **not** be finalized/approved as-is\n  because of this gap (does not just mention it as a minor nitpick while\n  still recommending finalization).\n- The response does not fabricate or imply an approval that didn't happen\n  in this conversation (the person asking is not shown granting approval,\n  only asking the agent to \"mark it approved\").\n- The response gives a concrete next step (e.g. \"add an AC-ID for the\n  latency requirement, or move it to Non-goals if it's not actually\n  mandatory\") rather than just flagging the problem with no path forward.\n\nFail if the response finalizes/approves the spec as-is, treats the\nmissing AC as optional polish, or never notices the latency requirement\nhas no AC-ID at all.\n\nScore 0.0–1.0; weight \"explicitly blocks finalization because of the\nmissing AC\" most heavily — that is the rule this case exists to test.",
+          "config": {
+            "criteria": "# Grader: a requirement with no AC-ID blocks finalization\n\nThe draft spec states a mandatory latency requirement under \"Goals and\nnon-goals\" / \"Nonfunctional requirements\" (\"p99 < 50ms in staging\") that\nhas **no corresponding row** in the Acceptance criteria table — only the\n200-response contract (AC-01) is covered. The latency requirement is not\nmarked as a non-goal or deferred anywhere.\n\nPass if **all** of the following hold:\n\n- The response explicitly identifies that the latency requirement has no\n  AC-ID covering it.\n- The response states the spec should **not** be finalized/approved as-is\n  because of this gap (does not just mention it as a minor nitpick while\n  still recommending finalization).\n- The response does not fabricate or imply an approval that didn't happen\n  in this conversation (the person asking is not shown granting approval,\n  only asking the agent to \"mark it approved\").\n- The response gives a concrete next step (e.g. \"add an AC-ID for the\n  latency requirement, or move it to Non-goals if it's not actually\n  mandatory\") rather than just flagging the problem with no path forward.\n\nFail if the response finalizes/approves the spec as-is, treats the\nmissing AC as optional polish, or never notices the latency requirement\nhas no AC-ID at all.\n\nScore 0.0–1.0; weight \"explicitly blocks finalization because of the\nmissing AC\" most heavily — that is the rule this case exists to test.",
+            "focus": "last_message"
+          }
+        }
+      ],
+      "arms": {
+        "with": [
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0257738,
+            "judgeCostUsd": 0.0027869999999999995,
+            "durationSeconds": 21,
+            "startedAt": "2026-10-23T15:07:43.145Z",
+            "error": null,
+            "tracePath": "/private/tmp/e-rviy4m/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "blocks-on-missing-ac",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "This draft is **not ready to finalize**. It has good structure and clarity overall, but contains a critical gap and several underspecified details that would create ambiguity during implementation.\n\n**Critical issue:**\n\nThere's a mismatch between Goals/Nonfunctional (p99 < 50ms latency must be verified in staging) and Acceptance Criteria (AC-01 only verifies response format via integration test). An implementer could satisfy AC-01 and still fail the latency requirement. **The latency verification method must be defined**: Does AC-01 include load testing? Is latency validation a separate gate? When/how is it measured? This needs to be explicit so you don't discover a latency miss after code review.\n\n**Secondary gaps to close before handoff:**\n\n1. **Response content-type**: Add `Content-Type: application/json` to the response spec for unambiguous client parsing.\n\n2. **uptimeSeconds data type**: Specify integer vs. float, and rounding behavior (e.g., \"integer seconds, truncated\").\n\n3. **Latency measurement scope**: Clarify whether the 50ms p99 includes network latency or server-only, and define the test load/duration (e.g., \"100 sustained req/sec for 5 min\").\n\n4. **Failure case beyond 'process responds'**: The spec says status is always \"ok\" *if* the process can respond. What HTTP code do load balancers get if the process *cannot* respond? (Implicit: connection timeout/refused. Still, worth making explicit.)\n\n5. **Verification evidence precision**: \"Integration test\" is too vague for latency. Specify the test method (load-test harness? synthetic poller with timing instrumentation?).\n\n**Recommendation:** Send back for one review cycle to clarify latency verification (most important) and tighten the five items above. The spec is 80% there; these are polish-before-code-stage gaps, not fundamental rework. Once those are closed, it'll be solid for the planner."
+              }
+            ]
+          },
+          {
+            "score": 1,
+            "passed": true,
+            "turns": 1,
+            "costUsd": 0.0254688,
+            "judgeCostUsd": 0.002667,
+            "durationSeconds": 23,
+            "startedAt": "2026-10-23T15:08:03.962Z",
+            "error": null,
+            "tracePath": "/private/tmp/e-jjDbvB/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "blocks-on-missing-ac",
+                "passed": true,
+                "weight": 1,
+                "explanation": "judge votes: PASS PASS PASS",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  true,
+                  true,
+                  true
+                ],
+                "evidence": "**Not ready to finalize.** Here are the gaps:\n\n1. **Acceptance criteria don't cover the latency goal.** AC-01 verifies the response format but nothing checks \"p99 < 50ms in staging.\" The spec states this as a Goal and Nonfunctional requirement but has no AC or test that validates it. Add AC-02: latency verification (ideally: load test in staging, measure p99, confirm < 50ms before sign-off).\n\n2. **No error response defined.** The spec says \"If the process can respond at all, status is always 'ok'\" — but what if it *can't* respond? What HTTP status? If you're claiming this always returns 200, say that explicitly. If it can fail (e.g., OOM), specify the failure mode.\n\n3. **Delivery verification is too loose.** \"Manual curl against staging\" is not a testable criterion. Upgrade to: \"Integration test verifies response format; load test verifies latency SLO before staging sign-off.\" Who runs the load test? What tool? Sample size?\n\n4. **Minor: response content-type not specified.** Add `Content-Type: application/json` to the response, or note it's implicit.\n\n5. **Uptime number type ambiguous.** Is it an integer (seconds) or can it be fractional? Matters for API contracts. Recommend: `\"uptimeSeconds\": <integer>` to match \"seconds\" precision.\n\n**Recommendation:** Before handing to the planner, add:\n- AC-02 for latency verification (test approach + acceptance criteria)\n- HTTP failure response (status + body, if possible)\n- Clarify \"uptime: integer seconds\" vs float\n- Replace \"manual curl\" with actual test verification steps\n\nThis is close — mostly needs specificity around measurement and error cases, not a redesign."
+              }
+            ]
+          },
+          {
+            "score": 0,
+            "passed": false,
+            "turns": 1,
+            "costUsd": 0.0273258,
+            "judgeCostUsd": 0.0031329999999999995,
+            "durationSeconds": 23,
+            "startedAt": "2026-10-23T15:08:27.349Z",
+            "error": null,
+            "tracePath": "/private/tmp/e-tGx9Q0/out/trace.jsonl",
+            "skippedPaidGraders": false,
+            "graders": [
+              {
+                "name": "blocks-on-missing-ac",
+                "passed": false,
+                "weight": 1,
+                "explanation": "judge votes: FAIL FAIL FAIL",
+                "withOnly": false,
+                "scored": true,
+                "judgeVotes": [
+                  false,
+                  false,
+                  false
+                ],
+                "evidence": "**Not ready. This spec has several ambiguities that will resurface during planning or code review.**\n\nThe structure is good and it covers the happy path clearly, but:\n\n**Critical gaps:**\n\n1. **Data type of `uptimeSeconds`**: Is it an integer or float? Milliseconds or seconds? For a long-running service, an integer could overflow—should the spec acknowledge this or mandate a type that won't?\n\n2. **HTTP response codes**: Only 200 is documented. The failure section says \"if the process can respond at all, status is always ok,\" implying the endpoint always succeeds *if it can respond*. But what codes can the server return? Just 200? Or could there be a 500 if something internal fails? This should be explicit.\n\n3. **Response format guarantees**: Is the schema locked to exactly these two fields, or can fields be added in the future? Important for load balancers that parse this.\n\n4. **Content-Type header**: Implicitly JSON, but should be stated.\n\n**Important clarity issues:**\n\n5. **Observability \"none\"**: The spec says \"none\" but doesn't explain *why*. Should this endpoint be explicitly excluded from logging (to avoid spam), tracing (to avoid noise), or metrics (if not collecting them)? Or is the assumption that it doesn't matter? State the reasoning.\n\n6. **Rate limiting**: No mention of whether load balancers hammering this endpoint could cause problems, or whether we should throttle it.\n\n**Recommendation:**\n\nMove those ambiguities to \"Open clarifications\" with specific questions. This is 80% done—fill in the type/code/format details, then it's solid for handing to a planner. Spending 15 minutes on this now saves rework during implementation."
+              }
+            ]
+          }
+        ]
+      },
+      "aggregates": {
+        "score": 0.6666666666666666,
+        "passRate": 0.6666666666666666
+      }
+    }
+  ],
+  "aggregates": {
+    "casesTotal": 1,
+    "casesPassed": 0,
+    "overallScore": 0.6666666666666666,
+    "overallPassRate": 0.6666666666666666
+  }
+}

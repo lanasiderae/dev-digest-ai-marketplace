@@ -16,6 +16,10 @@ versions follow [Semantic Versioning](https://semver.org/).
   requirement that has no AC-ID, and a request to finalize it anyway —
   the grader fails if the agent approves/finalizes instead of blocking on
   the gap.
+- **Eval evidence (2026-10-23, Haiku, N=3):** `spec-missing-ac-blocked`
+  passed 2/3 runs (score 0.67 avg) — the new blocking rule fires in the
+  majority of runs. Raw result committed at
+  `evals/results/2026-10-23T15-07-43-134Z/aggregate-result.json`.
 
 ## [1.0.0] — 2026-10-23
 
